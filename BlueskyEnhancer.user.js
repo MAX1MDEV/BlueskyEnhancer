@@ -649,7 +649,11 @@
   }
 
   function setupHotkeys() {
-    const throttledHotkeyHandler = throttle((e) => {
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
       if (e.ctrlKey && e.key === 'ArrowUp') {
         e.preventDefault();
         const homeLink = document.querySelector('a[href="/"][aria-label="Главная"]');
@@ -659,9 +663,7 @@
         const messagesLink = document.querySelector('a[href="/messages"][aria-label="Чат"]');
         if (messagesLink) messagesLink.click();
       }
-    }, 1);
-
-    document.addEventListener('keydown', throttledHotkeyHandler);
+    }, true);
   }
 
   function init() {
